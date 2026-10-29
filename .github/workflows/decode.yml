@@ -9,6 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          shopt -s nullglob
+          for p in b64/*.b64.part00; do b=${p%.part00}; cat "$b".part* > "$b"; done
           for f in b64/*.b64; do n=$(basename "$f" .b64); base64 -d "$f" > "$n"; done
           git rm -q -r b64
           git config user.name github-actions; git config user.email github-actions@users.noreply.github.com
